@@ -31,7 +31,7 @@ const HlsPlayer: React.FC<HlsPlayerProps> = ({ src }) => {
   }, [src]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="">
       <video
         ref={videoRef}
         controls
