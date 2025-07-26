@@ -17,10 +17,10 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="backdrop-blur-md bg-gray-900/60 text-white w-full fixed top-0 z-50 shadow-md">
+    <header className="backdrop-blur-sm text-white w-full fixed top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold">
-          FIQ BOLA
+          <img src="/fiqbola.png" className="w-[110px] m-1"/>
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 relative">
