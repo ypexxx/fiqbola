@@ -10,10 +10,10 @@ export default function AdBanner() {
     script1.type = "text/javascript";
     script1.innerHTML = `
       atOptions = {
-        'key' : '9552af4780abcbd8bc0322966ff0c489',
+        'key' : '36258ce007a46210cc5318e2c502b8a2',
         'format' : 'iframe',
-        'height' : 60,
-        'width' : 468,
+        'height' : 50,
+        'width' : 320,
         'params' : {}
       };
     `;
@@ -21,7 +21,7 @@ export default function AdBanner() {
     const script2 = document.createElement("script");
     script2.type = "text/javascript";
     script2.src =
-      "//www.highperformanceformat.com/9552af4780abcbd8bc0322966ff0c489/invoke.js";
+      "//pasteldrowsyaboriginal.com/36258ce007a46210cc5318e2c502b8a2/invoke.js";
 
     if (adRef.current) {
       adRef.current.innerHTML = "";

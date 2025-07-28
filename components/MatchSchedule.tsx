@@ -6,24 +6,35 @@ const scheduleData = [
     id: 1,
     event: "ASEAN Mandiri CUP",
     teams: [
+      { name: "FILIPINA U-23", flag: "/images/country/filipina.png" },
+      { name: "THAILAND U-23", flag: "/images/country/thailand.png" },
+    ],
+    day: "Senin, 28 Juli 2025",
+    time: "20.00 WIB",
+    status: "LIVE",
+  },
+  {
+    id: 2,
+    event: "ASEAN Mandiri CUP",
+    teams: [
       { name: "INDONESIA U-23", flag: "/images/country/indonesia.png" },
       { name: "VIETNAM U-23", flag: "/images/country/vietnam.png" },
     ],
-    day: "Selasa, 28 Juli 2025",
+    day: "Selasa, 29 Juli 2025",
     time: "20.00 WIB",
     status: "SOON",
   },
-//   {
-//     id: 2,
-//     event: "BRI Liga 1",
-//     teams: [
-//       { name: "PSS Sleman", flag: "/logo.png" },
-//       { name: "PERSIJA Jakarta", flag: "/logo.png" },
-//     ],
-//     day: "Today",
-//     time: "17.30 WIB",
-//     status: "SOON",
-//   },
+  //   {
+  //     id: 3,
+  //     event: "BRI Liga 1",
+  //     teams: [
+  //       { name: "PSS Sleman", flag: "/logo.png" },
+  //       { name: "PERSIJA Jakarta", flag: "/logo.png" },
+  //     ],
+  //     day: "Today",
+  //     time: "17.30 WIB",
+  //     status: "SOON",
+  //   },
 ];
 
 const MatchSchedule = () => {
