@@ -4,26 +4,26 @@ import Image from "next/image";
 const scheduleData = [
   {
     id: 1,
-    event: "ASEAN Mandiri CUP",
+    event: "Friendly Match",
     teams: [
-      { name: "FILIPINA U-23", flag: "/images/country/filipina.png" },
-      { name: "THAILAND U-23", flag: "/images/country/thailand.png" },
+      { name: "Persib Bandung", flag: "/images/club/persibbandung.png" },
+      { name: "Western Sydney", flag: "/images/club/westernSydney.png" },
     ],
-    day: "Senin, 28 Juli 2025",
-    time: "20.00 WIB",
+    day: "Sabtu, 2 Agustus 2025",
+    time: "19.00 WIB",
     status: "LIVE",
   },
-  {
-    id: 2,
-    event: "ASEAN Mandiri CUP",
-    teams: [
-      { name: "INDONESIA U-23", flag: "/images/country/indonesia.png" },
-      { name: "VIETNAM U-23", flag: "/images/country/vietnam.png" },
-    ],
-    day: "Selasa, 29 Juli 2025",
-    time: "20.00 WIB",
-    status: "SOON",
-  },
+  // {
+  //   id: 2,
+  //   event: "ASEAN Mandiri CUP",
+  //   teams: [
+  //     { name: "INDONESIA U-23", flag: "/images/country/indonesia.png" },
+  //     { name: "VIETNAM U-23", flag: "/images/country/vietnam.png" },
+  //   ],
+  //   day: "Selasa, 29 Juli 2025",
+  //   time: "20.00 WIB",
+  //   status: "SOON",
+  // },
   //   {
   //     id: 3,
   //     event: "BRI Liga 1",
