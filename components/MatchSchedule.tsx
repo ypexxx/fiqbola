@@ -3,12 +3,25 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
+// 1. Definisikan tipe data Match
+interface Match {
+  id: number;
+  homeTeam: string;
+  awayTeam: string;
+  homeLogo?: string;
+  awayLogo?: string;
+  matchDate: string;
+  matchTime: string;
+  venue: string;
+  status: "Live" | "Upcoming" | "Finished" | string; // Sesuaikan jika ada status lain
+}
+
 const MatchSchedule = () => {
-  const [matches, setMatches] = useState<any[]>([]);
+  const [matches, setMatches] = useState<Match[]>([]); // 2. Gunakan tipe yang telah dibuat
 
   const fetchMatches = async () => {
     const res = await fetch("/api/matches");
-    const data = await res.json();
+    const data: Match[] = await res.json();
     setMatches(data);
   };
 
@@ -18,11 +31,7 @@ const MatchSchedule = () => {
 
   const formatTanggal = (dateStr: string): string => {
     if (!dateStr) return "Tanggal tidak valid";
-
-    // Buat objek Date tanpa menyertakan zona waktu eksplisit
     const date = new Date(dateStr);
-
-    // Gunakan toLocaleDateString dengan opsi zona waktu Indonesia
     return date.toLocaleDateString("id-ID", {
       timeZone: "Asia/Jakarta",
       weekday: "long",
@@ -30,7 +39,6 @@ const MatchSchedule = () => {
       month: "long",
     });
   };
-
 
   const formatWaktu = (timeStr: string): string => {
     if (!timeStr) return "";
