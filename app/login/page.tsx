@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import bcrypt from "bcrypt";
 
 export default function AdminLogin() {
   const [username, setUsername] = useState("");

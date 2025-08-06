@@ -2,6 +2,19 @@
 
 import { useState, useEffect } from "react";
 
+type Match = {
+  id: string;
+  homeTeam: string;
+  awayTeam: string;
+  homeLogo: string;
+  awayLogo: string;
+  matchDate: string;
+  matchTime: string;
+  status: string;
+  venue: string;
+};
+
+
 const initialForm = {
   id: "",
   homeTeam: "",
@@ -84,7 +97,7 @@ const statuses = ["Upcoming", "Live", "Finished"];
 export default function MatchForm() {
   const [form, setForm] = useState(initialForm);
   const [isEditing, setIsEditing] = useState(false);
-  const [matches, setMatches] = useState<any[]>([]);
+  const [matches, setMatches] = useState<Match[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState("");
 

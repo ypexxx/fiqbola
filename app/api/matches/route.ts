@@ -1,11 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
+import { RowDataPacket } from "mysql2";
 import { db } from "@/lib/db";
+
+type Match = {
+  id: number;
+  homeTeam: string;
+  awayTeam: string;
+  homeLogo: string;
+  awayLogo: string;
+  matchDate: string;
+  matchTime: string;
+  status: string;
+  venue: string;
+};
 
 export async function GET() {
   const connection = await db;
-  const [rows]: any = await connection.query(
+  const [rows] = await connection.query<(Match & RowDataPacket)[]>(
     "SELECT * FROM matches ORDER BY matchDate, matchTime"
   );
+
   return NextResponse.json(rows);
 }
 
