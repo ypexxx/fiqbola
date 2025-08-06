@@ -17,10 +17,10 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="backdrop-blur-sm text-white w-full fixed top-0 z-50 shadow-md">
+    <header className="backdrop-blur-sm bg-[#171D8D]/10 text-white w-full fixed top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold">
-          <img src="/fiqbola.png" className="w-[110px] m-1"/>
+          <img src="/fiqbola.png" className="w-[110px] m-1" />
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 relative">
@@ -48,7 +48,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <nav className="md:hidden bg-gray-800/90 backdrop-blur-md px-4 pb-4 space-y-2">
+        <nav className="md:hidden bg-[#171D8D] backdrop-blur-md px-4 pb-4 space-y-2">
           {navLinks.map((link) => (
             <Link
               key={link.name}

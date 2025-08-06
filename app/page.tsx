@@ -1,16 +1,27 @@
 import Image from "next/image";
+import Navbar from "@/components/Navbar";
+import MatchSchedule from "@/components/MatchSchedule";
+import LeagueCards from "@/components/LeagueCards";
 
 export default function Home() {
   return (
     <>
+      <Navbar />
       <main>
         <img
           src="https://images.unsplash.com/photo-1607627000458-210e8d2bdb1d?q=80&w=1749&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          className="object-cover object-center min-h-screen w-full absolute -z-10"
+          className="fixed top-0 left-0 w-full h-full object-cover object-center -z-10 will-change-transform translate-z-0"
         />
-        <div className="container min-w-screen min-h-screen flex items-center text-center">
-          <div className="mx-auto flex flex-col">
-            <img src="/logo.png" className="mb-5" />
+
+        <div className="container min-w-screen flex flex-col items-center text-center">
+          <div className="mx-auto flex flex-col items-center mt-20">
+            <img
+              src="/logo.png"
+              className="mb-5"
+              width="200"
+              height="200"
+              alt="Logo"
+            />
             <a href="/stream">
               <button
                 type="button"
@@ -19,7 +30,10 @@ export default function Home() {
                 🎥 Watch Live!
               </button>
             </a>
+            <LeagueCards />
           </div>
+
+          <MatchSchedule />
         </div>
       </main>
     </>

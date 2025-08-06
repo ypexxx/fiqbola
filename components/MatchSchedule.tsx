@@ -1,85 +1,101 @@
 "use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
-const scheduleData = [
-  {
-    id: 1,
-    event: "Friendly Match",
-    teams: [
-      { name: "Persib Bandung", flag: "/images/club/persibbandung.png" },
-      { name: "Western Sydney", flag: "/images/club/westernSydney.png" },
-    ],
-    day: "Sabtu, 2 Agustus 2025",
-    time: "19.00 WIB",
-    status: "LIVE",
-  },
-  // {
-  //   id: 2,
-  //   event: "ASEAN Mandiri CUP",
-  //   teams: [
-  //     { name: "INDONESIA U-23", flag: "/images/country/indonesia.png" },
-  //     { name: "VIETNAM U-23", flag: "/images/country/vietnam.png" },
-  //   ],
-  //   day: "Selasa, 29 Juli 2025",
-  //   time: "20.00 WIB",
-  //   status: "SOON",
-  // },
-  //   {
-  //     id: 3,
-  //     event: "BRI Liga 1",
-  //     teams: [
-  //       { name: "PSS Sleman", flag: "/logo.png" },
-  //       { name: "PERSIJA Jakarta", flag: "/logo.png" },
-  //     ],
-  //     day: "Today",
-  //     time: "17.30 WIB",
-  //     status: "SOON",
-  //   },
-];
-
 const MatchSchedule = () => {
+  const [matches, setMatches] = useState<any[]>([]);
+
+  const fetchMatches = async () => {
+    const res = await fetch("/api/matches");
+    const data = await res.json();
+    setMatches(data);
+  };
+
+  useEffect(() => {
+    fetchMatches();
+  }, []);
+
+  const formatTanggal = (dateStr: string): string => {
+    if (!dateStr) return "Tanggal tidak valid";
+
+    // Buat objek Date tanpa menyertakan zona waktu eksplisit
+    const date = new Date(dateStr);
+
+    // Gunakan toLocaleDateString dengan opsi zona waktu Indonesia
+    return date.toLocaleDateString("id-ID", {
+      timeZone: "Asia/Jakarta",
+      weekday: "long",
+      day: "2-digit",
+      month: "long",
+    });
+  };
+
+
+  const formatWaktu = (timeStr: string): string => {
+    if (!timeStr) return "";
+    const [hour, minute] = timeStr.split(":");
+    return `${hour}.${minute} WIB`;
+  };
+
   return (
     <section className="w-full max-w-xl">
-      <div className="mt-10 mb-5 mx-4  rounded-md overflow-hidden">
-        <h2 className="bg-[#171D8D] p-1 text-[#00F4E6] font-bold text-xl text-center border-b-2">
+      <div className="mt-10 mb-5 mx-4 rounded-md overflow-hidden">
+        <h2 className="backdrop-blur-lg bg-[#171D8D] p-1 text-[#00F4E6] font-bold text-xl text-center border-b-2">
           SCHEDULE
         </h2>
 
         <div className="max-h-[400px] overflow-y-auto backdrop-blur-sm">
-          {scheduleData.map(({ id, event, teams, day, time, status }) => (
-            <div key={id} className="p-2 border-b-2 border-dotted border-white">
+          {matches.map((match) => (
+            <div
+              key={match.id}
+              className="p-2 border-b-2 border-dotted bg-white/10 border-white"
+            >
               <div className="flex justify-between">
-                <h1 className="text-base font-medium text-black">{event}</h1>
+                <h1 className="text-base font-medium text-black">
+                  {match.venue}
+                </h1>
                 <span
                   className={`font-bold ${
-                    status === "LIVE" ? "text-red-600" : "text-amber-300"
+                    match.status === "Live" ? "text-red-600" : "text-black/80"
                   }`}
                 >
-                  {status}
+                  {match.status?.toUpperCase()}
                 </span>
               </div>
 
               <div className="flex justify-between mt-1">
                 <div>
-                  {teams.map((team, index) => (
-                    <p
-                      key={index}
-                      className="text-sm text-black flex items-center gap-2"
-                    >
+                  <p className="text-sm text-black/80 flex items-center gap-2 mb-1">
+                    {match.homeLogo && (
                       <Image
-                        src={team.flag}
-                        alt={team.name}
+                        src={match.homeLogo}
+                        alt={match.homeTeam}
                         width={20}
                         height={20}
-                        className="inline"
                       />
-                      {team.name}
-                    </p>
-                  ))}
+                    )}
+                    {match.homeTeam}
+                  </p>
+                  <p className="text-sm text-black/80 flex items-center gap-2">
+                    {match.awayLogo && (
+                      <Image
+                        src={match.awayLogo}
+                        alt={match.awayTeam}
+                        width={20}
+                        height={20}
+                      />
+                    )}
+                    {match.awayTeam}
+                  </p>
                 </div>
                 <div className="flex flex-col justify-end text-right">
-                  <p className="text-base">{day}</p>
-                  <p className="text-base">{time}</p>
+                  <p className="text-base text-black/80">
+                    {formatTanggal(match.matchDate)}
+                  </p>
+                  <p className="text-base text-black/80">
+                    {formatWaktu(match.matchTime)}
+                  </p>
                 </div>
               </div>
             </div>
