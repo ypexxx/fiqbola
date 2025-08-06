@@ -1,18 +1,27 @@
-// app/api/login/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import bcrypt from "bcrypt";
 import { signToken } from "@/lib/auth";
+import type { RowDataPacket } from "mysql2";
+
+// Definisikan tipe untuk admin user
+interface AdminUser extends RowDataPacket {
+  id: number;
+  username: string;
+  password: string;
+}
 
 export async function POST(req: Request) {
   const body = await req.json();
   const { username, password } = body;
 
   const connection = await db;
-  const [rows]: any = await connection.query(
+
+  const [rows] = await connection.query<AdminUser[]>(
     "SELECT * FROM admins WHERE username = ?",
     [username]
   );
+
   const user = rows[0];
 
   if (!user) {

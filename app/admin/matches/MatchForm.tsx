@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
+
 
 type Match = {
   id: string;
@@ -341,9 +343,9 @@ export default function MatchForm() {
           >
             <div className="flex items-center gap-2">
               {match.homeLogo && (
-                <img
+                <Image
                   src={match.homeLogo}
-                  alt="home"
+                  alt={`${match.homeLogo} logo`}
                   className="h-8 w-8 object-contain"
                 />
               )}
@@ -351,9 +353,9 @@ export default function MatchForm() {
               <span className="mx-2">vs</span>
               <span className="font-semibold">{match.awayTeam}</span>
               {match.awayLogo && (
-                <img
+                <Image
                   src={match.awayLogo}
-                  alt="away"
+                  alt={`${match.awayLogo} logo`}
                   className="h-8 w-8 object-contain"
                 />
               )}
