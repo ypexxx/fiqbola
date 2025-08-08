@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <>
       {/* <Navbar /> */}
-      <FloatingLink />
+      {/* <FloatingLink /> */}
       <main>
         <AntiInspect />
         {/* Background Image */}

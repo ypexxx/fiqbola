@@ -20,7 +20,7 @@ export default function StreamPage() {
       <main>
         <AntiInspect />
         <div className="flex items-center flex-col justify-center min-h-screen w-full relative">
-          <FloatingLink />
+          {/* <FloatingLink /> */}
           {/* <Popunder /> */}
           <Image
             src="https://images.unsplash.com/photo-1607627000458-210e8d2bdb1d?q=80&w=1749&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
