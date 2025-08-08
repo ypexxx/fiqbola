@@ -10,11 +10,11 @@ export function useTimedLink() {
     const now = Date.now();
     const elapsed = now - lastClickedAt;
 
-    if (elapsed >= 20000) {
+    if (elapsed >= 10000) {
       setShowLink(true); // sudah lewat 20 detik, tampilkan link
     } else {
       setShowLink(false); // belum waktunya
-      const remaining = 20000 - elapsed;
+      const remaining = 10000 - elapsed;
 
       const timer = setTimeout(() => {
         setShowLink(true);
@@ -36,7 +36,7 @@ export function useTimedLink() {
         const now = Date.now();
         const elapsed = now - lastClickedAt;
 
-        if (elapsed >= 20000) {
+        if (elapsed >= 10000) {
           setShowLink(true);
         }
       }, 1000);
