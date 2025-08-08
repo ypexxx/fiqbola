@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 
@@ -13,15 +11,7 @@ const HlsPlayer: React.FC<HlsPlayerProps> = ({ src, urlAds }) => {
   const [isLoading, setIsLoading] = useState(true);
   const lastPopTime = useRef(0);
   const isPlaying = useRef(false);
-  const [isMobile, setIsMobile] = useState(false);
 
-  // Deteksi mobile
-  useEffect(() => {
-    const mobileCheck = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    setIsMobile(mobileCheck);
-  }, []);
-
-  // Load HLS
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -30,11 +20,12 @@ const HlsPlayer: React.FC<HlsPlayerProps> = ({ src, urlAds }) => {
       const hls = new Hls();
       hls.loadSource(src);
       hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => setIsLoading(false));
 
-      return () => {
-        hls.destroy();
-      };
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        setIsLoading(false);
+      });
+
+      return () => hls.destroy();
     } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
       video.src = src;
       video.addEventListener("loadedmetadata", () => setIsLoading(false));
@@ -43,80 +34,42 @@ const HlsPlayer: React.FC<HlsPlayerProps> = ({ src, urlAds }) => {
     }
   }, [src]);
 
-  // Track play state
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !urlAds) return;
 
     const onPlay = () => {
       isPlaying.current = true;
     };
-    const onPause = () => {
-      isPlaying.current = false;
-    };
 
-    video.addEventListener("play", onPlay);
-    video.addEventListener("pause", onPause);
+    const onVideoClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
 
-    // Event klik iklan di desktop
-    const onClickWhilePlaying = (e: MouseEvent) => {
-      if (!isMobile && isClickOnVideo(e)) {
-        const now = Date.now();
-        if (isPlaying.current && now - lastPopTime.current >= 15000) {
-          lastPopTime.current = now;
-          const newWin = window.open(urlAds, "_blank");
-          if (newWin) {
-            newWin.blur();
-            window.focus();
-          }
+      // Pastikan kliknya di area video, bukan di kontrol
+      if (target.tagName.toLowerCase() !== "video") return;
+
+      const now = Date.now();
+      if (isPlaying.current && now - lastPopTime.current >= 15000) {
+        lastPopTime.current = now;
+
+        // Popup iklan
+        const newWin = window.open(urlAds, "_blank");
+        if (newWin) {
+          newWin.blur();
+          window.focus();
+          setTimeout(() => window.focus(), 300);
         }
       }
     };
-    if (!isMobile) {
-      video.addEventListener("click", onClickWhilePlaying);
-    }
+
+    video.addEventListener("play", onPlay);
+    video.addEventListener("click", onVideoClick);
 
     return () => {
       video.removeEventListener("play", onPlay);
-      video.removeEventListener("pause", onPause);
-      if (!isMobile) {
-        video.removeEventListener("click", onClickWhilePlaying);
-      }
+      video.removeEventListener("click", onVideoClick);
     };
-  }, [urlAds, isMobile]);
-
-  // Deteksi apakah klik pada area video (bukan kontrol)
-  const isClickOnVideo = (e: MouseEvent | React.MouseEvent) => {
-    const target = e.target as HTMLElement;
-    return target.tagName.toLowerCase() === "video";
-  };
-
-  // Klik iklan + play/pause (untuk mobile overlay)
-  const handleAdClickMobile = (e: React.MouseEvent) => {
-    if (!isClickOnVideo(e)) return; // abaikan jika klik bukan di video
-
-    const now = Date.now();
-
-    // Buka iklan (cooldown 15 detik)
-    if (isPlaying.current && now - lastPopTime.current >= 15000) {
-      lastPopTime.current = now;
-      const newWin = window.open(urlAds, "_blank");
-      if (newWin) {
-        newWin.blur();
-        window.focus();
-      }
-    }
-
-    // Simulasikan klik kiri video (play/pause)
-    const video = videoRef.current;
-    if (video) {
-      if (video.paused) {
-        video.play();
-      } else {
-        video.pause();
-      }
-    }
-  };
+  }, [urlAds]);
 
   return (
     <div className="relative w-[92%] max-w-4xl mx-auto m-4 aspect-video bg-black border-2 border-white rounded-lg shadow-lg overflow-hidden">
@@ -125,20 +78,10 @@ const HlsPlayer: React.FC<HlsPlayerProps> = ({ src, urlAds }) => {
         controls
         autoPlay
         muted
-        playsInline
         className="w-full h-full object-contain"
       />
-
-      {/* Overlay hanya muncul di mobile */}
-      {isMobile && (
-        <div
-          className="absolute inset-0 z-10 cursor-pointer"
-          onClick={handleAdClickMobile}
-        />
-      )}
-
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 text-white text-sm z-20">
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 text-white text-sm">
           Loading video...
         </div>
       )}
