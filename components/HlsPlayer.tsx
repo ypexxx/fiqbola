@@ -14,7 +14,6 @@ const HlsPlayer: React.FC<HlsPlayerProps> = ({ src, urlAds }) => {
   const lastPopTime = useRef(0);
   const isPlaying = useRef(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [overlayVisible, setOverlayVisible] = useState(true);
 
   // Deteksi mobile
   useEffect(() => {
@@ -64,7 +63,12 @@ const HlsPlayer: React.FC<HlsPlayerProps> = ({ src, urlAds }) => {
       if (!isMobile && isClickOnVideo(e)) {
         const now = Date.now();
         if (isPlaying.current && now - lastPopTime.current >= 15000) {
-          triggerAd();
+          lastPopTime.current = now;
+          const newWin = window.open(urlAds, "_blank");
+          if (newWin) {
+            newWin.blur();
+            window.focus();
+          }
         }
       }
     };
@@ -81,41 +85,29 @@ const HlsPlayer: React.FC<HlsPlayerProps> = ({ src, urlAds }) => {
     };
   }, [urlAds, isMobile]);
 
+  // Deteksi apakah klik pada area video (bukan kontrol)
   const isClickOnVideo = (e: MouseEvent | React.MouseEvent) => {
     const target = e.target as HTMLElement;
     return target.tagName.toLowerCase() === "video";
   };
 
-  // Fungsi buka iklan + set cooldown
-  const triggerAd = () => {
-    const now = Date.now();
-    lastPopTime.current = now;
-
-    // buka iklan
-    const newWin = window.open(urlAds, "_blank");
-    if (newWin) {
-      newWin.blur();
-      window.focus();
-    }
-
-    // sembunyikan overlay
-    setOverlayVisible(false);
-
-    // munculkan lagi setelah 15 detik
-    setTimeout(() => {
-      setOverlayVisible(true);
-    }, 15000);
-  };
-
-  // Klik overlay di mobile
+  // Klik iklan + play/pause (untuk mobile overlay)
   const handleAdClickMobile = (e: React.MouseEvent) => {
-    if (!isClickOnVideo(e)) return;
+    if (!isClickOnVideo(e)) return; // abaikan jika klik bukan di video
 
-    if (isPlaying.current) {
-      triggerAd();
+    const now = Date.now();
+
+    // Buka iklan (cooldown 15 detik)
+    if (isPlaying.current && now - lastPopTime.current >= 15000) {
+      lastPopTime.current = now;
+      const newWin = window.open(urlAds, "_blank");
+      if (newWin) {
+        newWin.blur();
+        window.focus();
+      }
     }
 
-    // Simulasikan toggle play/pause
+    // Simulasikan klik kiri video (play/pause)
     const video = videoRef.current;
     if (video) {
       if (video.paused) {
@@ -137,8 +129,8 @@ const HlsPlayer: React.FC<HlsPlayerProps> = ({ src, urlAds }) => {
         className="w-full h-full object-contain"
       />
 
-      {/* Overlay (aktif hanya jika overlayVisible) */}
-      {isMobile && overlayVisible && (
+      {/* Overlay hanya muncul di mobile */}
+      {isMobile && (
         <div
           className="absolute inset-0 z-10 cursor-pointer"
           onClick={handleAdClickMobile}
