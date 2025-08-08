@@ -3,11 +3,14 @@ import Hls from "hls.js";
 
 type HlsPlayerProps = {
   src: string;
+  urlAds: string;
 };
 
-const HlsPlayer: React.FC<HlsPlayerProps> = ({ src }) => {
+const HlsPlayer: React.FC<HlsPlayerProps> = ({ src, urlAds }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const lastPopTime = useRef(0);
+  const isPlaying = useRef(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -36,6 +39,41 @@ const HlsPlayer: React.FC<HlsPlayerProps> = ({ src }) => {
       alert("HLS tidak didukung di browser ini.");
     }
   }, [src]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !urlAds) return;
+
+    const onPlay = () => {
+      isPlaying.current = true;
+    };
+
+    const onClickWhilePlaying = () => {
+      const now = Date.now();
+      if (
+        isPlaying.current &&
+        now - lastPopTime.current >= 15000 //
+      ) {
+        lastPopTime.current = now;
+        const newWin = window.open(urlAds, "_blank");
+        if (newWin) {
+          newWin.blur();
+          window.focus();
+          setTimeout(() => {
+            window.focus();
+          }, 300);
+        }
+      }
+    };
+
+    video.addEventListener("play", onPlay);
+    video.addEventListener("click", onClickWhilePlaying);
+
+    return () => {
+      video.removeEventListener("play", onPlay);
+      video.removeEventListener("click", onClickWhilePlaying);
+    };
+  }, [urlAds]);
 
   return (
     <div className="relative w-[92%] max-w-4xl mx-auto m-4 aspect-video bg-black border-2 border-white rounded-lg shadow-lg overflow-hidden">

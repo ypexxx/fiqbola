@@ -2,12 +2,16 @@ import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import MatchSchedule from "@/components/MatchSchedule";
 import LeagueCards from "@/components/LeagueCards";
+import FloatingLink from "@/app/stream/FloatingLink";
+import AntiInspect from "@/components/AntiInspect";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
+      <FloatingLink />
       <main>
+        <AntiInspect />
         {/* Background Image */}
         <div className="fixed top-0 left-0 w-full h-full -z-10">
           <Image
@@ -20,7 +24,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="container min-w-screen flex flex-col items-center text-center">
+        <div className="container min-w-screen min-h-screen flex flex-col items-center justify-center text-center">
           <div className="mx-auto flex flex-col items-center mt-20">
             {/* Logo Image */}
             <Image
@@ -41,10 +45,10 @@ export default function Home() {
               </button>
             </a>
 
-            <LeagueCards />
+            {/* <LeagueCards /> */}
           </div>
 
-          <MatchSchedule />
+          {/* <MatchSchedule /> */}
         </div>
       </main>
     </>
