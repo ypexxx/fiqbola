@@ -37,7 +37,7 @@ export default function StreamPage() {
           <div className="mt-5">{/* <AdBanner /> */}</div>
         </div>
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }
