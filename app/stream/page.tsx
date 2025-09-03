@@ -31,7 +31,7 @@ export default function StreamPage() {
             priority
           />
           <HlsPlayer
-            src="https://stream1111.b-cdn.net//stream1.m3u8"
+            src="http://202.155.94.240:7070/hls/stream1.m3u8"
             urlAds="https://pasteldrowsyaboriginal.com/bypt6qcv2?key=128a17eccd05f00f7935253761140063"
           />
           <div className="mt-5">{/* <AdBanner /> */}</div>
